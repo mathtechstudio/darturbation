@@ -10,7 +10,8 @@ class OrderGenerator {
     }
 
     // Determine item count based on user behavior type
-    final int itemCount = max(1, DarturbationCore().patterns.getOrderFrequency(user.behaviorType));
+    final int itemCount = max(
+        1, DarturbationCore().patterns.getOrderFrequency(user.behaviorType));
 
     final items = <Product>[];
     double totalPrice = 0;
