@@ -206,8 +206,8 @@ These classes represent the generated data entities. Each includes a `toJson()` 
 
 ## Contributing
 
-We welcome contributions! Please see our `CONTRIBUTING.md` (coming soon) for details.
+We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## License
 
-This project is licensed under the MIT License - see the `LICENSE` file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
