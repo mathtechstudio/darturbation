@@ -5,6 +5,10 @@ homepage: https://github.com/mathtechstudio/darturbation
 repository: https://github.com/mathtechstudio/darturbation
 issue_tracker: https://github.com/mathtechstudio/darturbation/issues
 
+publisher: mathtechstudio
+
+maintainer: Iqbal F <iqbalfauzien@proton.me>
+
 environment:
   sdk: ">=3.3.0 <4.0.0"
 

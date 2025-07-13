@@ -1,6 +1,35 @@
 part of '../../darturbation.dart';
 
+/// A versatile generator for creating data based on a provided schema.
+///
+/// This class allows you to define the structure of your desired data
+/// using a `Map<String, Type>` and it will generate corresponding values.
+/// It intelligently attempts to generate realistic data for common field names
+/// like 'email', 'name', 'address', and 'phone'.
 class GenericGenerator {
+  /// Generates a single row of data conforming to the given [schema].
+  ///
+  /// For each key-value pair in the [schema], it calls [_generateValue]
+  /// to produce a value of the specified [Type].
+  ///
+  /// Parameters:
+  /// - [schema]: A map where keys are field names (String) and values are
+  ///   the desired data types (Type, e.g., `String`, `int`, `double`, `bool`, `DateTime`).
+  ///
+  /// Returns a `Map<String, dynamic>` representing a single generated data row.
+  ///
+  /// Example:
+  /// ```dart
+  /// final customSchema = {
+  ///   'user_id': int,
+  ///   'user_name': String,
+  ///   'user_email': String,
+  ///   'is_active': bool,
+  ///   'last_login': DateTime,
+  /// };
+  /// final generatedRow = GenericGenerator().generate(customSchema);
+  /// print(generatedRow);
+  /// ```
   Map<String, dynamic> generate(Map<String, Type> schema) {
     final Map<String, dynamic> row = {};
     schema.forEach((key, type) {
@@ -9,6 +38,19 @@ class GenericGenerator {
     return row;
   }
 
+  /// Generates a single value based on the specified [type] and [key].
+  ///
+  /// This internal method is responsible for producing data for each field
+  /// in the schema. It uses `faker` for more realistic string data
+  /// (like emails, names, addresses, phone numbers) and `Darturbation`'s
+  /// utility methods for other types.
+  ///
+  /// Parameters:
+  /// - [type]: The desired data type for the value.
+  /// - [key]: The field name, used to infer the type of data to generate
+  ///   (e.g., if 'email' is in the key, it generates an email address).
+  ///
+  /// Returns a `dynamic` value that matches the requested [type].
   dynamic _generateValue(Type type, String key) {
     if (type == String) {
       if (key.toLowerCase().contains('email')) {

@@ -1,7 +1,22 @@
-// src/data/behavioral_patterns.dart
 part of '../../darturbation.dart';
 
+/// A collection of static data and methods defining various behavioral patterns
+/// and distributions used in Darturbation's data generation.
+///
+/// This class centralizes the configuration for simulating realistic user behaviors,
+/// seasonal trends, and pricing models, ensuring consistency across generated data.
 class BehavioralPatterns {
+  /// Defines characteristics and preferences for different user behavior types.
+  ///
+  /// Each key represents a behavior type (e.g., 'power_user', 'regular_user'),
+  /// and its value is a map containing properties like:
+  /// - `orderFrequency`: Min/max range for order frequency.
+  /// - `avgOrderValue`: Min/max range for average order value.
+  /// - `reviewLikelihood`: Probability of leaving a review.
+  /// - `preferredCategories`: List of preferred product categories.
+  /// - `pricePreference`: User's preference for product pricing (e.g., 'premium', 'budget').
+  /// - `paymentMethods`: List of preferred payment methods.
+  /// - `activityHours`: Typical hours of online activity.
   static const Map<String, Map<String, dynamic>> userBehaviors = {
     'power_user': {
       'orderFrequency': {'min': 8, 'max': 20},
@@ -41,6 +56,13 @@ class BehavioralPatterns {
     }
   };
 
+  /// Defines multipliers for various product categories during different seasonal events.
+  ///
+  /// This map helps simulate how sales or demand for certain product types
+  /// might fluctuate based on real-world seasonal patterns (e.g., increased
+  /// food sales during Ramadan, higher fashion sales during Eid).
+  /// Keys are season names (e.g., 'ramadan', 'christmas'), and values are maps
+  /// of category-specific multipliers.
   static const Map<String, Map<String, double>> seasonalPatterns = {
     'ramadan': {
       'food': 1.8,
@@ -89,6 +111,12 @@ class BehavioralPatterns {
     }
   };
 
+  /// Defines typical peak hours for user activity during different periods.
+  ///
+  /// This data can be used to simulate when users are most active online,
+  /// influencing the timing of generated events like orders or reviews.
+  /// Keys are period names (e.g., 'weekday', 'weekend', 'payday'), and values
+  /// are lists of typical active hours (0-23).
   static const Map<String, List<int>> peakHours = {
     'weekday': [12, 13, 17, 18, 19, 20, 21],
     'weekend': [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
@@ -97,6 +125,11 @@ class BehavioralPatterns {
     'evening': [17, 18, 19, 20, 21]
   };
 
+  /// Defines the general popularity or market share of different product categories.
+  ///
+  /// This can be used to influence the distribution of generated products
+  /// or the likelihood of a user interacting with a certain category.
+  /// Keys are category names, and values are their popularity scores (double).
   static const Map<String, double> categoryPopularity = {
     'fashion': 0.25,
     'electronics': 0.20,
@@ -107,6 +140,13 @@ class BehavioralPatterns {
     'sports': 0.10
   };
 
+  /// Defines typical price ranges for products within different categories
+  /// and for different price preferences (budget, mid-range, premium).
+  ///
+  /// This data helps generate realistic product prices that align with
+  /// market expectations and user spending habits.
+  /// Keys are price preference levels, and values are maps of category-specific
+  /// base prices.
   static const Map<String, Map<String, double>> priceRanges = {
     'budget': {
       'electronics': 200000,
@@ -137,22 +177,63 @@ class BehavioralPatterns {
     }
   };
 
+  /// Retrieves the behavioral data for a specific user behavior type.
+  ///
+  /// Parameters:
+  /// - [behaviorType]: The [String] identifier for the user behavior type
+  ///   (e.g., 'power_user', 'casual_user').
+  ///
+  /// Returns a `Map<String, dynamic>` containing the detailed behavioral
+  /// characteristics for the specified type. Defaults to 'casual_user' data
+  /// if the provided `behaviorType` is not found.
   static Map<String, dynamic> getUserBehaviorData(String behaviorType) {
     return userBehaviors[behaviorType] ?? userBehaviors['casual_user']!;
   }
 
+  /// Retrieves the seasonal sales multiplier for a given product category and season.
+  ///
+  /// Parameters:
+  /// - [category]: The product category (e.g., 'food', 'electronics').
+  /// - [season]: The name of the season or event (e.g., 'ramadan', 'christmas').
+  ///
+  /// Returns a [double] representing the sales multiplier. Defaults to 1.0
+  /// if the category or season is not found in the predefined patterns.
   static double getSeasonalMultiplier(String category, String season) {
     return seasonalPatterns[season]?[category] ?? 1.0;
   }
 
+  /// Retrieves the list of peak activity hours for a given period.
+  ///
+  /// Parameters:
+  /// - [period]: The period for which to retrieve peak hours (e.g., 'weekday',
+  ///   'weekend', 'payday').
+  ///
+  /// Returns a [List<int>] of hours (0-23) that are considered peak activity
+  /// times. Defaults to 'weekday' peak hours if the period is not found.
   static List<int> getPeakHours(String period) {
     return peakHours[period] ?? peakHours['weekday']!;
   }
 
+  /// Retrieves the popularity score for a given product category.
+  ///
+  /// Parameters:
+  /// - [category]: The product category (e.g., 'fashion', 'books').
+  ///
+  /// Returns a [double] representing the category's popularity. Defaults to 0.05
+  /// if the category is not found.
   static double getCategoryPopularity(String category) {
     return categoryPopularity[category] ?? 0.05;
   }
 
+  /// Retrieves a base price for a product category based on a specified price preference.
+  ///
+  /// Parameters:
+  /// - [category]: The product category (e.g., 'electronics', 'home').
+  /// - [pricePreference]: The desired price preference (e.g., 'budget',
+  ///   'mid_range', 'premium').
+  ///
+  /// Returns a [double] representing the base price. Defaults to 100000
+  /// if the category or price preference is not found.
   static double getPriceRange(String category, String pricePreference) {
     return priceRanges[pricePreference]?[category] ?? 100000;
   }

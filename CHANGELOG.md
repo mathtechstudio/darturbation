@@ -10,3 +10,4 @@
 - Added streaming capabilities for large dataset generation.
 - Provided data export functionalities (JSON, CSV, SQL).
 - Included comprehensive examples and tests.
+- Add extensive documentation and usage examples

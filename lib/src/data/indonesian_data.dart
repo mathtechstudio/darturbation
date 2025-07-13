@@ -1,8 +1,12 @@
-// Data Sources
-// src/data/indonesian_data.dart
 part of '../../darturbation.dart';
 
+/// A comprehensive collection of Indonesian-specific data sources.
+///
+/// This class provides static lists and methods for generating authentic
+/// Indonesian names, addresses, phone numbers, product brands, and other
+/// localized data. It is crucial for the 'Indonesian-First' approach of Darturbation.
 class IndonesianData {
+  /// A list of common Indonesian male first names.
   static const List<String> maleNames = [
     'Agus',
     'Ahmad',
@@ -76,6 +80,7 @@ class IndonesianData {
     'Daffa'
   ];
 
+  /// A list of common Indonesian female first names.
   static const List<String> femaleNames = [
     'Ayu',
     'Bella',
@@ -149,6 +154,7 @@ class IndonesianData {
     'Clara'
   ];
 
+  /// A list of common Indonesian last names (surnames).
   static const List<String> lastNames = [
     'Santoso',
     'Wijaya',
@@ -212,6 +218,7 @@ class IndonesianData {
     'Pohan'
   ];
 
+  /// A list of major Indonesian cities.
   static const List<String> cities = [
     'Jakarta',
     'Surabaya',
@@ -255,6 +262,7 @@ class IndonesianData {
     'Magelang'
   ];
 
+  /// A map linking major Indonesian provinces to their respective cities.
   static const Map<String, List<String>> provinces = {
     'Jakarta': [
       'Jakarta Selatan',
@@ -288,6 +296,7 @@ class IndonesianData {
     'Sulawesi Selatan': ['Makassar', 'Palopo', 'Parepare', 'Sungguminasa']
   };
 
+  /// A list of common Indonesian street names.
   static const List<String> streetNames = [
     'Jl. Sudirman',
     'Jl. Thamrin',
@@ -332,6 +341,7 @@ class IndonesianData {
     'Jl. Ragunan'
   ];
 
+  /// A list of common product brands, including local Indonesian brands.
   static const List<String> productBrands = [
     // Electronics
     'Samsung', 'Apple', 'Xiaomi', 'Oppo', 'Vivo', 'Realme', 'Asus', 'Acer',
@@ -350,6 +360,7 @@ class IndonesianData {
     'Teh Botol Sosro', 'Aqua', 'Le Minerale', 'Pocari Sweat', 'Mizone'
   ];
 
+  /// A map defining various product categories and their associated subcategories.
   static const Map<String, List<String>> productCategories = {
     'electronics': [
       'smartphone',
@@ -443,6 +454,7 @@ class IndonesianData {
     ]
   };
 
+  /// A list of common Indonesian payment methods.
   static const List<String> paymentMethods = [
     'GoPay',
     'OVO',
@@ -466,6 +478,7 @@ class IndonesianData {
     'Akulaku'
   ];
 
+  /// A list of standard e-commerce order statuses.
   static const List<String> orderStatuses = [
     'pending',
     'confirmed',
@@ -479,6 +492,7 @@ class IndonesianData {
     'failed'
   ];
 
+  /// A list of common Indonesian review titles.
   static const List<String> reviewTitles = [
     'Barang bagus banget!',
     'Sesuai ekspektasi',
@@ -507,6 +521,7 @@ class IndonesianData {
     'Pengalaman berbelanja yang menyenangkan'
   ];
 
+  /// A list of common Indonesian review comments.
   static const List<String> reviewComments = [
     'Barangnya bagus banget, sesuai dengan yang di foto. Pengiriman juga cepat. Penjual responsif dan ramah. Packing rapi dan aman. Terima kasih!',
     'Kualitas produk sangat baik, material premium dan finishing rapi. Harga sebanding dengan kualitas. Recommended seller!',
@@ -525,6 +540,12 @@ class IndonesianData {
     'Produk berkualitas tinggi dengan harga yang kompetitif. Packing aman dan pengiriman tepat waktu. Recommended seller!'
   ];
 
+  /// Generates a realistic Indonesian phone number.
+  ///
+  /// The phone number is generated using common Indonesian mobile prefixes
+  /// and a random suffix.
+  ///
+  /// Returns a [String] representing an Indonesian phone number.
   static String generatePhoneNumber() {
     final prefixes = [
       '0811',
@@ -552,6 +573,16 @@ class IndonesianData {
     return '$prefix$suffix';
   }
 
+  /// Generates a realistic email address based on first and last names.
+  ///
+  /// The email address uses common domain names and can include separators
+  /// and numbers for variety.
+  ///
+  /// Parameters:
+  /// - [firstName]: The first name of the user.
+  /// - [lastName]: The last name of the user.
+  ///
+  /// Returns a [String] representing a generated email address.
   static String generateEmail(String firstName, String lastName) {
     final domains = [
       'gmail.com',
@@ -576,6 +607,11 @@ class IndonesianData {
     return '$username@$domain';
   }
 
+  /// Generates a realistic Indonesian street address.
+  ///
+  /// The address includes a street name, house number, and RT/RW (neighborhood unit).
+  ///
+  /// Returns a [String] representing a generated Indonesian address.
   static String generateAddress() {
     final street = Darturbation.randomChoice(streetNames);
     final number = Darturbation.randomInt(1, 999);
@@ -584,10 +620,22 @@ class IndonesianData {
     return '$street No. $number, $rtRw';
   }
 
+  /// Generates a random 5-digit postal code.
+  ///
+  /// Returns a [String] representing a generated postal code.
   static String generatePostalCode() {
     return Darturbation.randomInt(10000, 99999).toString();
   }
 
+  /// Generates a product SKU (Stock Keeping Unit) based on the product category.
+  ///
+  /// The SKU is formed by the first three letters of the category (uppercase)
+  /// followed by a random 6-digit number.
+  ///
+  /// Parameters:
+  /// - [category]: The category of the product.
+  ///
+  /// Returns a [String] representing the generated SKU.
   static String generateSKU(String category) {
     final prefix = category.substring(0, 3).toUpperCase();
     final number = Darturbation.randomInt(100000, 999999);

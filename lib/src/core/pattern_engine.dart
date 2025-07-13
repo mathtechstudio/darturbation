@@ -1,10 +1,23 @@
 part of '../../darturbation.dart';
 
-/// Handles behavioral patterns and realistic data distribution
+/// Manages and applies behavioral patterns and realistic data distribution logic.
+///
+/// The [PatternEngine] is responsible for simulating various real-world behaviors
+/// and trends, such as user activity types, seasonal sales boosts, and realistic
+/// pricing variations. It leverages predefined behavioral data to generate
+/// more authentic and interconnected mock data.
 class PatternEngine {
+  /// A static instance of [Random] for generating random values within the engine.
   static final Random _random = Random();
 
-  /// Generate user behavior type based on distribution
+  /// Determines a user's behavior type based on a predefined probability distribution.
+  ///
+  /// This method simulates different user segments (e.g., power users, casual users)
+  /// by assigning a behavior type according to a set of probabilities.
+  ///
+  /// Returns a [String] representing the assigned user behavior type.
+  /// Possible return values include 'power_user', 'regular_user', 'casual_user',
+  /// and 'inactive_user'.
   String getUserBehaviorType() {
     final rand = _random.nextDouble();
     if (rand < 0.05) return 'power_user'; // 5% - High activity
@@ -13,7 +26,18 @@ class PatternEngine {
     return 'inactive_user'; // 40% - Low activity
   }
 
-  /// Get order frequency based on user behavior
+  /// Retrieves the typical order frequency for a given user behavior type.
+  ///
+  /// This method uses predefined behavioral patterns to determine a realistic
+  /// range for how often a user of a specific type might place orders.
+  ///
+  /// Parameters:
+  /// - [behaviorType]: A [String] representing the user's behavior type
+  ///   (e.g., 'power_user', 'regular_user').
+  ///
+  /// Returns an [int] representing a random order frequency within the defined
+  /// range for the given behavior type. Returns 0 or 1 as a default if the
+  /// behavior type is unknown or has no defined frequency.
   int getOrderFrequency(String behaviorType) {
     final frequency =
         BehavioralPatterns.userBehaviors[behaviorType]?['orderFrequency'];
@@ -23,7 +47,18 @@ class PatternEngine {
     return Darturbation.randomInt(0, 1); // Default for unknown behavior
   }
 
-  /// Generate realistic price based on category and user price preference
+  /// Generates a realistic price for a product based on its category and
+  /// a specified price preference.
+  ///
+  /// This method applies a base price from [BehavioralPatterns] and introduces
+  /// a random variation to simulate market fluctuations and diverse pricing.
+  ///
+  /// Parameters:
+  /// - [category]: The product category (e.g., 'electronics', 'fashion').
+  /// - [pricePreference]: The user's price preference (e.g., 'budget',
+  ///   'mid_range', 'premium').
+  ///
+  /// Returns a [double] representing a realistic price for the product.
   double getRealisticPrice(String category, String pricePreference) {
     final basePrice =
         BehavioralPatterns.getPriceRange(category, pricePreference);
@@ -32,10 +67,20 @@ class PatternEngine {
     return basePrice * multiplier;
   }
 
-  /// Generate seasonal multiplier for sales patterns
+  /// Calculates a seasonal multiplier for sales patterns based on the given date and pattern.
+  ///
+  /// This method simulates seasonal trends (e.g., Ramadan, Christmas, payday boosts)
+  /// that can affect sales volumes or other metrics. In a more advanced implementation,
+  /// this could also consider regional settings from [ContextManager].
+  ///
+  /// Parameters:
+  /// - [date]: The [DateTime] for which to calculate the seasonal multiplier.
+  /// - [pattern]: A [String] indicating the seasonal pattern to apply
+  ///   (e.g., 'ramadan_boost', 'christmas_boost', 'payday_boost').
+  ///
+  /// Returns a [double] representing the multiplier for the specified season.
+  /// Returns 1.0 if no specific pattern is matched.
   double getSeasonalMultiplier(DateTime date, String pattern) {
-    // In a real implementation, this would consider the current region from ContextManager
-    // For now, it uses the existing logic.
     switch (pattern.toLowerCase()) {
       case 'ramadan_boost':
         return _getRamadanMultiplier(date);
@@ -48,20 +93,42 @@ class PatternEngine {
     }
   }
 
+  /// Calculates the Ramadan-specific sales multiplier.
+  ///
+  /// This is a simplified implementation. A more accurate version would
+  /// calculate actual Islamic calendar dates.
+  ///
+  /// Parameters:
+  /// - [date]: The [DateTime] to check against Ramadan periods.
+  ///
+  /// Returns a [double] multiplier based on the month.
   double _getRamadanMultiplier(DateTime date) {
-    // Simplified - in real implementation would calculate actual Ramadan dates
     final month = date.month;
     if (month == 4 || month == 5) return 1.5; // Ramadan season
     if (month == 6) return 2.0; // Eid shopping
     return 1.0;
   }
 
+  /// Calculates the Christmas-specific sales multiplier.
+  ///
+  /// Parameters:
+  /// - [date]: The [DateTime] to check against the Christmas period.
+  ///
+  /// Returns a [double] multiplier based on the month.
   double _getChristmasMultiplier(DateTime date) {
     if (date.month == 12) return 1.8;
     if (date.month == 1) return 0.7; // Post-holiday slump
     return 1.0;
   }
 
+  /// Calculates the payday-specific sales multiplier.
+  ///
+  /// This simulates increased purchasing activity around typical payday dates.
+  ///
+  /// Parameters:
+  /// - [date]: The [DateTime] to check for payday periods.
+  ///
+  /// Returns a [double] multiplier based on the day of the month.
   double _getPaydayMultiplier(DateTime date) {
     final day = date.day;
     if (day >= 25 && day <= 31) return 1.3; // End of month payday
@@ -69,7 +136,18 @@ class PatternEngine {
     return 1.0;
   }
 
-  /// Generate review sentiment/content based on likelihood
+  /// Generates a review comment based on user behavior type and product rating.
+  ///
+  /// This method simulates realistic review generation, where users with
+  /// certain behaviors are more likely to leave reviews, and the content
+  /// varies based on the product's rating.
+  ///
+  /// Parameters:
+  /// - [behaviorType]: The user's behavior type (e.g., 'power_user').
+  /// - [productRating]: The rating given to the product (e.g., 1.0 to 5.0).
+  ///
+  /// Returns a [String] containing a generated review comment, or an empty
+  /// string if no review is generated based on the likelihood.
   String generateReviewComment(String behaviorType, double productRating) {
     final likelihood = BehavioralPatterns.userBehaviors[behaviorType]
             ?['reviewLikelihood'] ??
