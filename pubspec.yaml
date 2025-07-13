@@ -1,0 +1,17 @@
+name: darturbation
+description: Advanced Mock Data Generator to create realistic data for testing and development.
+version: 1.0.0
+homepage: https://github.com/mathtechstudio/darturbation
+repository: https://github.com/mathtechstudio/darturbation
+issue_tracker: https://github.com/mathtechstudio/darturbation/issues
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+# Add regular dependencies here.
+dependencies:
+  # path: ^1.8.0
+
+dev_dependencies:
+  lints: any
+  test: ^1.24.0
