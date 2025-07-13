@@ -1,4 +1,4 @@
-# Darturbation: Advanced Mock Data Generator for Dart & Flutter
+# 💦Darturbation💦: Advanced Mock Data Generator for Dart & Flutter
 
 [![Dart CI](https://github.com/mathtechstudio/darturbation/actions/workflows/ci.yml/badge.svg)](https://github.com/mathtechstudio/darturbation/actions/workflows/ci.yml)
 [![Version](https://img.shields.io/badge/version-1.0.0-blue)](https://pub.dev/packages/darturbation)
