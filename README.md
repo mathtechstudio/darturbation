@@ -206,7 +206,7 @@ These classes represent the generated data entities. Each includes a `toJson()` 
 
 ## Contributing
 
-We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING) for details.
 
 ## License
 
