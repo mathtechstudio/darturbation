@@ -1,7 +1,7 @@
 # 💦Darturbation💦: Advanced Mock Data Generator for Dart & Flutter
 
 [![Dart CI](https://github.com/mathtechstudio/darturbation/actions/workflows/ci.yml/badge.svg)](https://github.com/mathtechstudio/darturbation/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-1.0.0-blue)](https://pub.dev/packages/darturbation)
+[![Version](https://img.shields.io/badge/version-1.0.0+1-blue)](https://pub.dev/packages/darturbation)
 [![Platforms](https://img.shields.io/badge/platforms-Android%20%7C%20iOS%20%7C%20Web%20%7C%20Windows%20%7C%20macOS%20%7C%20Linux-blue)](https://pub.dev/packages/darturbation)
 
 <!-- ![Darturbation Logo](https://via.placeholder.com/400x200?text=Darturbation+Logo) -->

@@ -11,3 +11,7 @@
 - Provided data export functionalities (JSON, CSV, SQL).
 - Included comprehensive examples and tests.
 - Add extensive documentation and usage examples
+
+## 1.0.0+1
+
+- Minor updates for pubspec
