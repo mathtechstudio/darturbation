@@ -1,0 +1,52 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Dart CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  format_and_analyze:
+    name: Format and Analyze
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          # Use a stable Flutter version to get a stable Dart SDK
+          flutter-version: "stable"
+          channel: "stable"
+
+      - name: Install Dependencies
+        run: dart pub get
+
+      - name: Check format
+        run: dart format --set-exit-if-changed .
+
+      - name: Analyze
+        run: dart analyze
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          # Use a stable Flutter version to get a stable Dart SDK
+          flutter-version: "stable"
+          channel: "stable"
+
+      - name: Install Dependencies
+        run: dart pub get
+
+      - name: Run tests
+        run: dart test

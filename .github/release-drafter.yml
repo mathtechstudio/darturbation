@@ -1,0 +1,6 @@
+template: |
+  - insert summary here
+  
+  ### Contributions
+  
+  $CHANGES
