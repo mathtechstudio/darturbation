@@ -9,6 +9,17 @@ publisher: mathtechstudio
 
 maintainer: Iqbal F <iqbalfauzien@proton.me>
 
+topics: 
+  - mock-data
+  - fake-data
+  - data-generator
+  - development-tools
+  - behavioral-patterns
+  - dart
+  - flutter
+  - testing
+
+
 environment:
   sdk: ">=3.3.0 <4.0.0"
 
