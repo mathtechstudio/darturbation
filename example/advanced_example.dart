@@ -7,23 +7,25 @@ void main() {
   print('1. 📊 Enhanced Schema Generation:');
   final improvedData = Darturbation.fromSchema(
     schema: {
-      'firstName': String,      // → Smart name generation
-      'lastName': String,       // → Smart name generation
-      'emailAddress': String,   // → Valid email format
-      'phoneNumber': String,    // → Indonesian phone format
-      'userAge': int,          // → Age between 18-65
-      'salary': double,        // → Realistic salary in IDR
-      'isActive': bool,        // → 80% chance true
-      'createdAt': DateTime,   // → Up to 2 years ago
+      'firstName': String, // → Smart name generation
+      'lastName': String, // → Smart name generation
+      'emailAddress': String, // → Valid email format
+      'phoneNumber': String, // → Indonesian phone format
+      'userAge': int, // → Age between 18-65
+      'salary': double, // → Realistic salary in IDR
+      'isActive': bool, // → 80% chance true
+      'createdAt': DateTime, // → Up to 2 years ago
     },
     count: 3,
   );
-  
-  improvedData.forEach((item) {
-    print('  ${item['firstName']} ${item['lastName']} - ${item['emailAddress']}');
-    print('  Age: ${item['userAge']}, Salary: Rp${item['salary']}, Active: ${item['isActive']}');
+
+  for (var item in improvedData) {
+    print(
+        '  ${item['firstName']} ${item['lastName']} - ${item['emailAddress']}');
+    print(
+        '  Age: ${item['userAge']}, Salary: Rp${item['salary']}, Active: ${item['isActive']}');
     print('  Phone: ${item['phoneNumber']}, Joined: ${item['createdAt']}\n');
-  });
+  }
 
   // ===== TIME SERIES DATA =====
   print('2. 📈 Time Series Data Generation:');
@@ -32,30 +34,30 @@ void main() {
     endDate: DateTime(2024, 1, 7),
     interval: Duration(days: 1),
     baseValue: 1000.0,
-    trend: 0.1,        // 10% upward trend
-    seasonality: 0.2,  // 20% seasonal variation
-    noise: 0.1,        // 10% random noise
+    trend: 0.1, // 10% upward trend
+    seasonality: 0.2, // 20% seasonal variation
+    noise: 0.1, // 10% random noise
   );
-  
+
   print('  Weekly Sales Data:');
-  salesData.forEach((point) {
+  for (var point in salesData) {
     final date = DateTime.parse(point['timestamp']);
     print('  ${date.day}/${date.month}: Rp${point['value']}');
-  });
+  }
   print('');
 
   // ===== FLUTTER UTILITIES =====
   print('3. 📱 Flutter-Specific Mock Data:');
-  
+
   // ListView data
   final userProfiles = Darturbation.listView(
     itemCount: 3,
     itemType: 'user_profile',
   );
   print('  User Profiles for ListView:');
-  userProfiles.forEach((user) {
+  for (var user in userProfiles) {
     print('  - ${user['firstName']} ${user['lastName']} (${user['bio']})');
-  });
+  }
   print('');
 
   // Card data
@@ -64,9 +66,10 @@ void main() {
     cardType: 'product',
   );
   print('  Product Cards:');
-  productCards.forEach((product) {
-    print('  - ${product['name']}: Rp${product['price']} (⭐${product['rating']})');
-  });
+  for (var product in productCards) {
+    print(
+        '  - ${product['name']}: Rp${product['price']} (⭐${product['rating']})');
+  }
   print('');
 
   // Form data
@@ -76,14 +79,15 @@ void main() {
   );
   print('  Registration Form: ${registrationForm['title']}');
   final fields = registrationForm['fields'] as List;
-  fields.forEach((field) {
-    print('  - ${field['label']} (${field['type']}) ${field['required'] ? '*required' : ''}');
-  });
+  for (var field in fields) {
+    print(
+        '  - ${field['label']} (${field['type']}) ${field['required'] ? '*required' : ''}');
+  }
   print('');
 
   // ===== API MOCKING =====
   print('4. 🌐 API Response Mocking:');
-  
+
   // REST API response
   final apiResponse = Darturbation.apiResponse(
     endpoint: '/api/users',
@@ -96,11 +100,12 @@ void main() {
     },
     itemCount: 2,
   );
-  print('  REST API Response (${apiResponse['status']} ${apiResponse['statusText']}):');
+  print(
+      '  REST API Response (${apiResponse['status']} ${apiResponse['statusText']}):');
   final apiData = apiResponse['data'] as List;
-  apiData.forEach((user) {
+  for (var user in apiData) {
     print('  - ${user['firstName']} ${user['lastName']} (${user['email']})');
-  });
+  }
   print('');
 
   // WebSocket message
@@ -115,11 +120,12 @@ void main() {
   print('  WebSocket Message (${wsMessage['type']}):');
   final messageData = wsMessage['data'] as Map<String, dynamic>;
   print('  ${messageData['username']}: "${messageData['message']}"');
-  print('  Channel: ${wsMessage['channel']}, Time: ${wsMessage['timestamp']}\n');
+  print(
+      '  Channel: ${wsMessage['channel']}, Time: ${wsMessage['timestamp']}\n');
 
   // ===== ADVANCED ANALYTICS =====
   print('5. 🧠 Advanced Analytics Data:');
-  
+
   // Hierarchical data
   final orgChart = Darturbation.hierarchical(
     schema: {
@@ -131,10 +137,10 @@ void main() {
     totalNodes: 8,
   );
   print('  Organizational Chart:');
-  orgChart.forEach((employee) {
+  for (var employee in orgChart) {
     final indent = '  ' * (employee['depth'] + 1);
     print('$indent- ${employee['name']} (${employee['title']})');
-  });
+  }
   print('');
 
   // Graph data
@@ -150,17 +156,17 @@ void main() {
   final edges = socialNetwork['edges'] as List;
   print('  Social Network:');
   print('  Nodes: ${nodes.length}, Connections: ${edges.length}');
-  nodes.forEach((node) {
+  for (var node in nodes) {
     print('  - ${node['name']} (${node['interests']})');
-  });
+  }
   print('');
 
   // Correlated series
   final businessMetrics = Darturbation.correlatedSeries(
     seriesNames: ['marketing_spend', 'sales_revenue'],
     correlationMatrix: [
-      [1.0, 0.8],  // marketing correlations
-      [0.8, 1.0],  // sales correlations
+      [1.0, 0.8], // marketing correlations
+      [0.8, 1.0], // sales correlations
     ],
     count: 5,
     means: [50000, 100000],
@@ -168,8 +174,9 @@ void main() {
   );
   print('  Correlated Business Metrics:');
   for (int i = 0; i < 5; i++) {
-    print('  Day ${i + 1}: Marketing Rp${businessMetrics['marketing_spend']![i]}, '
-          'Sales Rp${businessMetrics['sales_revenue']![i]}');
+    print(
+        '  Day ${i + 1}: Marketing Rp${businessMetrics['marketing_spend']![i]}, '
+        'Sales Rp${businessMetrics['sales_revenue']![i]}');
   }
   print('');
 
@@ -185,17 +192,20 @@ void main() {
     anomalyTypes: ['extreme_values', 'missing_data'],
   );
   print('  User Data with Anomalies:');
-  userData.forEach((item) {
+  for (var item in userData) {
     final data = item['data'] as Map<String, dynamic>;
     final isAnomaly = item['isAnomaly'] as bool;
     final anomalyType = item['anomalyType'];
-    
-    print('  - Age: ${data['age']}, Income: ${data['income']}, Email: ${data['email']}');
+
+    print(
+        '  - Age: ${data['age']}, Income: ${data['income']}, Email: ${data['email']}');
     if (isAnomaly) {
       print('    ⚠️  ANOMALY: $anomalyType');
     }
-  });
+  }
 
-  print('\n✨ All examples completed! Darturbation v2.0.0 is ready for production use.');
-  print('🎯 Perfect for Flutter developers, API testing, and advanced analytics!');
+  print(
+      '\n✨ All examples completed! Darturbation v2.0.0 is ready for production use.');
+  print(
+      '🎯 Perfect for Flutter developers, API testing, and advanced analytics!');
 }
