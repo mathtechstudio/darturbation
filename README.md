@@ -6,7 +6,7 @@
 
 **Darturbation** is the most advanced mock data generator for Dart and Flutter applications, designed specifically for developers who need realistic, context-aware, and behaviorally consistent test data. Unlike traditional faker libraries, Darturbation generates data that maintains logical relationships and follows real-world patterns.
 
-## 🚀 What's New in v2.x
+## 🚀 What's New in v2.0.1
 
 ### 🎯 **Advanced Data Generation**
 
