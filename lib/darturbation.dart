@@ -37,6 +37,20 @@ part 'src/models/user_model.dart';
 // Scenarios
 part 'src/scenarios/ecommerce_scenario.dart';
 
+// Utils
+part 'src/utils/flutter_utils.dart';
+part 'src/utils/api_mocker.dart';
+
+// Extensions for Random to support Gaussian distribution
+extension RandomExtension on Random {
+  /// Generates a normally distributed random number using Box-Muller transform
+  double nextGaussian() {
+    double u1 = nextDouble();
+    double u2 = nextDouble();
+    return sqrt(-2.0 * log(u1)) * cos(2.0 * pi * u2);
+  }
+}
+
 /// Darturbation is an advanced mock data generator for Dart and Flutter applications.
 ///
 /// This library focuses on context-aware and behavioral pattern generation,
@@ -622,5 +636,706 @@ class Darturbation {
   /// Returns a randomly generated UUID v4 string.
   static String generateId() {
     return _uuid.v4();
+  }
+
+  // =================================================================
+  // ADVANCED GENERATION METHODS
+  // =================================================================
+
+  /// Generates realistic time-series data with configurable trends and seasonality.
+  ///
+  /// This method creates data points over time with natural variations,
+  /// trends, and seasonal patterns that mimic real-world data.
+  ///
+  /// Example:
+  /// ```dart
+  /// List<Map<String, dynamic>> salesData = Darturbation.timeSeries(
+  ///   startDate: DateTime(2023, 1, 1),
+  ///   endDate: DateTime(2023, 12, 31),
+  ///   interval: Duration(days: 1),
+  ///   baseValue: 1000.0,
+  ///   trend: 0.1, // 10% upward trend
+  ///   seasonality: 0.2, // 20% seasonal variation
+  ///   noise: 0.1, // 10% random noise
+  /// );
+  /// ```
+  ///
+  /// Parameters:
+  /// - [startDate]: Start date for the time series
+  /// - [endDate]: End date for the time series
+  /// - [interval]: Time interval between data points
+  /// - [baseValue]: Base value around which data fluctuates
+  /// - [trend]: Trend factor (-1.0 to 1.0, where positive is upward)
+  /// - [seasonality]: Seasonal variation factor (0.0 to 1.0)
+  /// - [noise]: Random noise factor (0.0 to 1.0)
+  ///
+  /// Returns a list of maps containing 'timestamp' and 'value' keys.
+  static List<Map<String, dynamic>> timeSeries({
+    required DateTime startDate,
+    required DateTime endDate,
+    Duration interval = const Duration(days: 1),
+    double baseValue = 100.0,
+    double trend = 0.0,
+    double seasonality = 0.0,
+    double noise = 0.1,
+  }) {
+    final List<Map<String, dynamic>> result = [];
+    DateTime currentDate = startDate;
+    int index = 0;
+
+    while (currentDate.isBefore(endDate) ||
+        currentDate.isAtSameMomentAs(endDate)) {
+      // Calculate trend component
+      final double trendComponent = trend * index;
+
+      // Calculate seasonal component (yearly cycle)
+      final double dayOfYear = currentDate
+          .difference(DateTime(currentDate.year, 1, 1))
+          .inDays
+          .toDouble();
+      final double seasonalComponent =
+          seasonality * baseValue * sin(2 * pi * dayOfYear / 365.25);
+
+      // Add random noise
+      final double noiseComponent =
+          noise * baseValue * (randomDouble(-1.0, 1.0));
+
+      // Combine all components
+      final double value =
+          baseValue + trendComponent + seasonalComponent + noiseComponent;
+
+      result.add({
+        'timestamp': currentDate.toIso8601String(),
+        'value': double.parse(value.toStringAsFixed(2)),
+        'date': currentDate,
+      });
+
+      currentDate = currentDate.add(interval);
+      index++;
+    }
+
+    return result;
+  }
+
+  /// Generates hierarchical data structures with parent-child relationships.
+  ///
+  /// This method creates nested data structures like organizational charts,
+  /// category trees, or any hierarchical data with realistic relationships.
+  ///
+  /// Example:
+  /// ```dart
+  /// List<Map<String, dynamic>> orgChart = Darturbation.hierarchical(
+  ///   schema: {
+  ///     'id': String,
+  ///     'name': String,
+  ///     'title': String,
+  ///     'department': String,
+  ///   },
+  ///   maxDepth: 4,
+  ///   childrenPerNode: [1, 5], // 1-5 children per node
+  ///   totalNodes: 100,
+  /// );
+  /// ```
+  ///
+  /// Parameters:
+  /// - [schema]: Schema definition for each node
+  /// - [maxDepth]: Maximum depth of the hierarchy
+  /// - [childrenPerNode]: Range of children per node [min, max]
+  /// - [totalNodes]: Approximate total number of nodes to generate
+  ///
+  /// Returns a list of maps representing the hierarchical structure.
+  static List<Map<String, dynamic>> hierarchical({
+    required Map<String, Type> schema,
+    int maxDepth = 3,
+    List<int> childrenPerNode = const [2, 5],
+    int totalNodes = 50,
+  }) {
+    final List<Map<String, dynamic>> result = [];
+    int nodeCount = 0;
+
+    void generateNode(String? parentId, int depth) {
+      if (depth >= maxDepth || nodeCount >= totalNodes) return;
+
+      final node = _genericGenerator.generate(schema);
+      node['id'] = generateId();
+      node['parentId'] = parentId;
+      node['depth'] = depth;
+      node['children'] = <Map<String, dynamic>>[];
+
+      result.add(node);
+      nodeCount++;
+
+      if (depth < maxDepth - 1 && nodeCount < totalNodes) {
+        final childCount = randomInt(childrenPerNode[0], childrenPerNode[1]);
+        for (int i = 0; i < childCount && nodeCount < totalNodes; i++) {
+          generateNode(node['id'], depth + 1);
+        }
+      }
+    }
+
+    // Generate root nodes
+    final rootCount = (totalNodes * 0.1).ceil().clamp(1, 5);
+    for (int i = 0; i < rootCount && nodeCount < totalNodes; i++) {
+      generateNode(null, 0);
+    }
+
+    // Build parent-child relationships
+    final Map<String, Map<String, dynamic>> nodeMap = {
+      for (var node in result) node['id']: node
+    };
+    for (var node in result) {
+      if (node['parentId'] != null) {
+        final parent = nodeMap[node['parentId']];
+        if (parent != null) {
+          (parent['children'] as List).add(node);
+        }
+      }
+    }
+
+    return result;
+  }
+
+  /// Generates realistic graph data with nodes and edges.
+  ///
+  /// Creates graph structures suitable for social networks, dependency graphs,
+  /// or any connected data visualization.
+  ///
+  /// Example:
+  /// ```dart
+  /// Map<String, dynamic> socialNetwork = Darturbation.graph(
+  ///   nodeCount: 100,
+  ///   nodeSchema: {
+  ///     'name': String,
+  ///     'age': int,
+  ///     'location': String,
+  ///   },
+  ///   connectionProbability: 0.1, // 10% chance of connection between any two nodes
+  ///   directed: false,
+  /// );
+  /// ```
+  ///
+  /// Parameters:
+  /// - [nodeCount]: Number of nodes to generate
+  /// - [nodeSchema]: Schema for node attributes
+  /// - [connectionProbability]: Probability of connection between nodes (0.0-1.0)
+  /// - [directed]: Whether the graph is directed
+  /// - [minDegree]: Minimum connections per node
+  /// - [maxDegree]: Maximum connections per node
+  ///
+  /// Returns a map with 'nodes' and 'edges' keys.
+  static Map<String, dynamic> graph({
+    int nodeCount = 50,
+    Map<String, Type> nodeSchema = const {'name': String, 'value': int},
+    double connectionProbability = 0.1,
+    bool directed = false,
+    int minDegree = 1,
+    int maxDegree = 10,
+  }) {
+    // Generate nodes
+    final List<Map<String, dynamic>> nodes = [];
+    for (int i = 0; i < nodeCount; i++) {
+      final node = _genericGenerator.generate(nodeSchema);
+      node['id'] = generateId();
+      node['index'] = i;
+      nodes.add(node);
+    }
+
+    // Generate edges
+    final List<Map<String, dynamic>> edges = [];
+    final Set<String> edgeSet = {};
+
+    for (int i = 0; i < nodeCount; i++) {
+      final sourceNode = nodes[i];
+      int degree = 0;
+
+      for (int j = 0; j < nodeCount; j++) {
+        if (i == j || degree >= maxDegree) continue;
+
+        final targetNode = nodes[j];
+        final List<String> nodeIds = [
+          sourceNode['id'].toString(),
+          targetNode['id'].toString()
+        ];
+        final edgeKey = directed
+            ? '${sourceNode['id']}->${targetNode['id']}'
+            : (nodeIds..sort()).join('-');
+
+        if (!edgeSet.contains(edgeKey) && randomBool(connectionProbability)) {
+          edges.add({
+            'id': generateId(),
+            'source': sourceNode['id'],
+            'target': targetNode['id'],
+            'weight': randomDouble(0.1, 1.0),
+            'directed': directed,
+          });
+          edgeSet.add(edgeKey);
+          degree++;
+        }
+      }
+
+      // Ensure minimum degree
+      while (degree < minDegree && edges.length < nodeCount * maxDegree) {
+        final targetIndex = randomInt(0, nodeCount - 1);
+        if (targetIndex == i) continue;
+
+        final targetNode = nodes[targetIndex];
+        final List<String> nodeIds = [
+          sourceNode['id'].toString(),
+          targetNode['id'].toString()
+        ];
+        final edgeKey = directed
+            ? '${sourceNode['id']}->${targetNode['id']}'
+            : (nodeIds..sort()).join('-');
+
+        if (!edgeSet.contains(edgeKey)) {
+          edges.add({
+            'id': generateId(),
+            'source': sourceNode['id'],
+            'target': targetNode['id'],
+            'weight': randomDouble(0.1, 1.0),
+            'directed': directed,
+          });
+          edgeSet.add(edgeKey);
+          degree++;
+        }
+      }
+    }
+
+    return {
+      'nodes': nodes,
+      'edges': edges,
+      'metadata': {
+        'nodeCount': nodes.length,
+        'edgeCount': edges.length,
+        'directed': directed,
+        'averageDegree': edges.length * (directed ? 1 : 2) / nodes.length,
+      },
+    };
+  }
+
+  /// Generates correlated data sets with configurable correlation strength.
+  ///
+  /// Creates multiple data series where values are mathematically correlated,
+  /// useful for testing analytics and machine learning algorithms.
+  ///
+  /// Example:
+  /// ```dart
+  /// Map<String, List<double>> correlatedData = Darturbation.correlatedSeries(
+  ///   seriesNames: ['temperature', 'ice_cream_sales', 'beach_visitors'],
+  ///   correlationMatrix: [
+  ///     [1.0, 0.8, 0.7],   // temperature correlations
+  ///     [0.8, 1.0, 0.6],   // ice_cream_sales correlations
+  ///     [0.7, 0.6, 1.0],   // beach_visitors correlations
+  ///   ],
+  ///   count: 365,
+  ///   means: [25.0, 100.0, 50.0],
+  ///   standardDeviations: [10.0, 30.0, 20.0],
+  /// );
+  /// ```
+  ///
+  /// Parameters:
+  /// - [seriesNames]: Names of the data series
+  /// - [correlationMatrix]: Correlation matrix (must be symmetric)
+  /// - [count]: Number of data points per series
+  /// - [means]: Mean values for each series
+  /// - [standardDeviations]: Standard deviations for each series
+  ///
+  /// Returns a map with series names as keys and data lists as values.
+  static Map<String, List<double>> correlatedSeries({
+    required List<String> seriesNames,
+    required List<List<double>> correlationMatrix,
+    int count = 100,
+    List<double>? means,
+    List<double>? standardDeviations,
+  }) {
+    if (seriesNames.length != correlationMatrix.length) {
+      throw ArgumentError(
+          'Series names count must match correlation matrix size');
+    }
+
+    final int seriesCount = seriesNames.length;
+    final List<double> actualMeans = means ?? List.filled(seriesCount, 0.0);
+    final List<double> actualStdDevs =
+        standardDeviations ?? List.filled(seriesCount, 1.0);
+
+    final Map<String, List<double>> result = {};
+    for (String name in seriesNames) {
+      result[name] = [];
+    }
+
+    // Generate correlated data using Cholesky decomposition approach (simplified)
+    for (int i = 0; i < count; i++) {
+      final List<double> independent = [];
+      for (int j = 0; j < seriesCount; j++) {
+        independent.add(_random.nextGaussian());
+      }
+
+      for (int j = 0; j < seriesCount; j++) {
+        double value = 0.0;
+
+        // Apply correlation (simplified approach)
+        for (int k = 0; k <= j; k++) {
+          final correlation = k == j ? 1.0 : correlationMatrix[j][k];
+          value += correlation * independent[k];
+        }
+
+        // Scale and shift to desired mean and standard deviation
+        value = actualMeans[j] + value * actualStdDevs[j] / sqrt(j + 1);
+        result[seriesNames[j]]!.add(double.parse(value.toStringAsFixed(3)));
+      }
+    }
+
+    return result;
+  }
+
+  /// Generates synthetic data with realistic outliers and anomalies.
+  ///
+  /// Creates datasets with intentional outliers for testing anomaly detection
+  /// algorithms and data validation systems.
+  ///
+  /// Example:
+  /// ```dart
+  /// List<Map<String, dynamic>> dataset = Darturbation.withAnomalies(
+  ///   schema: {
+  ///     'value': double,
+  ///     'category': String,
+  ///     'timestamp': DateTime,
+  ///   },
+  ///   count: 1000,
+  ///   anomalyRate: 0.05, // 5% anomalies
+  ///   anomalyTypes: ['extreme_values', 'missing_data', 'inconsistent_patterns'],
+  /// );
+  /// ```
+  ///
+  /// Parameters:
+  /// - [schema]: Data schema definition
+  /// - [count]: Total number of records
+  /// - [anomalyRate]: Proportion of anomalous records (0.0-1.0)
+  /// - [anomalyTypes]: Types of anomalies to introduce
+  ///
+  /// Returns a list of maps with 'data', 'isAnomaly', and 'anomalyType' keys.
+  static List<Map<String, dynamic>> withAnomalies({
+    required Map<String, Type> schema,
+    int count = 100,
+    double anomalyRate = 0.1,
+    List<String> anomalyTypes = const ['extreme_values', 'missing_data'],
+  }) {
+    final List<Map<String, dynamic>> result = [];
+    final int anomalyCount = (count * anomalyRate).round();
+    final Set<int> anomalyIndices = {};
+
+    // Select random indices for anomalies
+    while (anomalyIndices.length < anomalyCount) {
+      anomalyIndices.add(randomInt(0, count - 1));
+    }
+
+    for (int i = 0; i < count; i++) {
+      Map<String, dynamic> record = _genericGenerator.generate(schema);
+      bool isAnomaly = anomalyIndices.contains(i);
+      String? anomalyType;
+
+      if (isAnomaly) {
+        anomalyType = randomChoice(anomalyTypes);
+
+        switch (anomalyType) {
+          case 'extreme_values':
+            // Make numeric values extremely high or low
+            record.forEach((key, value) {
+              if (value is double) {
+                record[key] = randomBool() ? value * 10 : value / 10;
+              } else if (value is int) {
+                record[key] = randomBool() ? value * 10 : (value / 10).round();
+              }
+            });
+            break;
+
+          case 'missing_data':
+            // Set some fields to null
+            final keysToNull = randomChoice(record.keys.toList());
+            record[keysToNull] = null;
+            break;
+
+          case 'inconsistent_patterns':
+            // Introduce inconsistent data patterns
+            record.forEach((key, value) {
+              if (value is String && key.toLowerCase().contains('email')) {
+                record[key] = 'invalid-email-format';
+              } else if (value is DateTime) {
+                record[key] = DateTime(1900, 1, 1); // Unrealistic date
+              }
+            });
+            break;
+        }
+      }
+
+      result.add({
+        'data': record,
+        'isAnomaly': isAnomaly,
+        'anomalyType': anomalyType,
+        'index': i,
+      });
+    }
+
+    return result;
+  }
+
+  // =================================================================
+  // FLUTTER-SPECIFIC METHODS
+  // =================================================================
+
+  /// Generates mock data optimized for Flutter ListView widgets.
+  ///
+  /// Example:
+  /// ```dart
+  /// List<Map<String, dynamic>> listData = Darturbation.listView(
+  ///   itemCount: 50,
+  ///   itemType: 'user_profile',
+  /// );
+  /// ```
+  static List<Map<String, dynamic>> listView({
+    int itemCount = 20,
+    String itemType = 'generic',
+    Map<String, Type>? customSchema,
+  }) {
+    final schema = customSchema ?? _getSchemaForType(itemType);
+    return FlutterUtils.listViewData(
+      itemCount: itemCount,
+      itemSchema: schema,
+    );
+  }
+
+  /// Generates mock data for Flutter Card widgets.
+  ///
+  /// Example:
+  /// ```dart
+  /// List<Map<String, dynamic>> cards = Darturbation.cards(
+  ///   cardCount: 10,
+  ///   cardType: 'product',
+  /// );
+  /// ```
+  static List<Map<String, dynamic>> cards({
+    int cardCount = 10,
+    String cardType = 'generic',
+  }) {
+    return FlutterUtils.cardData(
+      cardCount: cardCount,
+      cardType: cardType,
+    );
+  }
+
+  /// Generates mock form data for Flutter form widgets.
+  ///
+  /// Example:
+  /// ```dart
+  /// Map<String, dynamic> form = Darturbation.form(
+  ///   formType: 'registration',
+  ///   includeValidation: true,
+  /// );
+  /// ```
+  static Map<String, dynamic> form({
+    String formType = 'generic',
+    bool includeValidation = true,
+  }) {
+    return FlutterUtils.formData(
+      formType: formType,
+      includeValidation: includeValidation,
+    );
+  }
+
+  /// Generates mock navigation data for Flutter routing.
+  ///
+  /// Example:
+  /// ```dart
+  /// Map<String, dynamic> navigation = Darturbation.navigation(
+  ///   routeCount: 15,
+  /// );
+  /// ```
+  static Map<String, dynamic> navigation({
+    int routeCount = 10,
+    bool includeHistory = true,
+  }) {
+    return FlutterUtils.navigationData(
+      routeCount: routeCount,
+      includeHistory: includeHistory,
+    );
+  }
+
+  /// Generates Flutter theme data.
+  ///
+  /// Example:
+  /// ```dart
+  /// Map<String, dynamic> theme = Darturbation.theme(
+  ///   isDark: true,
+  /// );
+  /// ```
+  static Map<String, dynamic> theme({
+    String themeName = 'default',
+    bool isDark = false,
+  }) {
+    return FlutterUtils.themeData(
+      themeName: themeName,
+      isDark: isDark,
+    );
+  }
+
+  // =================================================================
+  // API MOCKING METHODS
+  // =================================================================
+
+  /// Generates mock REST API responses.
+  ///
+  /// Example:
+  /// ```dart
+  /// Map<String, dynamic> apiResponse = Darturbation.apiResponse(
+  ///   endpoint: '/api/users',
+  ///   method: 'GET',
+  ///   itemCount: 25,
+  /// );
+  /// ```
+  static Map<String, dynamic> apiResponse({
+    required String endpoint,
+    String method = 'GET',
+    Map<String, Type>? dataSchema,
+    int itemCount = 10,
+    int statusCode = 200,
+  }) {
+    return ApiMocker.restResponse(
+      endpoint: endpoint,
+      method: method,
+      dataSchema: dataSchema ?? {'id': String, 'name': String, 'email': String},
+      itemCount: itemCount,
+      statusCode: statusCode,
+    );
+  }
+
+  /// Generates mock GraphQL responses.
+  ///
+  /// Example:
+  /// ```dart
+  /// Map<String, dynamic> gqlResponse = Darturbation.graphqlResponse(
+  ///   query: 'query GetUsers { users { id name } }',
+  ///   dataSchema: {'users': List},
+  /// );
+  /// ```
+  static Map<String, dynamic> graphqlResponse({
+    required String query,
+    Map<String, Type> dataSchema = const {},
+    int itemCount = 10,
+  }) {
+    return ApiMocker.graphqlResponse(
+      query: query,
+      dataSchema: dataSchema,
+      itemCount: itemCount,
+    );
+  }
+
+  /// Generates mock WebSocket messages.
+  ///
+  /// Example:
+  /// ```dart
+  /// Map<String, dynamic> wsMessage = Darturbation.websocketMessage(
+  ///   type: 'chat_message',
+  ///   dataSchema: {'userId': String, 'message': String},
+  /// );
+  /// ```
+  static Map<String, dynamic> websocketMessage({
+    required String type,
+    Map<String, Type> dataSchema = const {},
+  }) {
+    return ApiMocker.websocketMessage(
+      type: type,
+      dataSchema: dataSchema,
+    );
+  }
+
+  /// Generates mock error responses.
+  ///
+  /// Example:
+  /// ```dart
+  /// Map<String, dynamic> error = Darturbation.errorResponse(
+  ///   statusCode: 404,
+  /// );
+  /// ```
+  static Map<String, dynamic> errorResponse({
+    int statusCode = 500,
+    String? message,
+  }) {
+    return ApiMocker.errorResponse(
+      statusCode: statusCode,
+      message: message,
+    );
+  }
+
+  // =================================================================
+  // HELPER METHODS
+  // =================================================================
+
+  /// Gets predefined schema for common data types.
+  static Map<String, Type> _getSchemaForType(String type) {
+    switch (type.toLowerCase()) {
+      case 'user_profile':
+        return {
+          'id': String,
+          'firstName': String,
+          'lastName': String,
+          'email': String,
+          'avatarUrl': String,
+          'bio': String,
+          'joinedDate': DateTime,
+          'isActive': bool,
+        };
+      case 'product':
+        return {
+          'id': String,
+          'name': String,
+          'description': String,
+          'price': double,
+          'currency': String,
+          'imageUrl': String,
+          'category': String,
+          'inStock': bool,
+          'rating': double,
+        };
+      case 'article':
+        return {
+          'id': String,
+          'title': String,
+          'excerpt': String,
+          'author': String,
+          'publishDate': DateTime,
+          'readTime': String,
+          'imageUrl': String,
+          'category': String,
+          'viewCount': int,
+        };
+      case 'message':
+        return {
+          'id': String,
+          'senderId': String,
+          'content': String,
+          'timestamp': DateTime,
+          'isRead': bool,
+          'messageType': String,
+        };
+      case 'notification':
+        return {
+          'id': String,
+          'title': String,
+          'message': String,
+          'timestamp': DateTime,
+          'isRead': bool,
+          'priority': String,
+          'actionUrl': String,
+        };
+      default:
+        return {
+          'id': String,
+          'title': String,
+          'description': String,
+          'value': double,
+          'status': String,
+          'createdAt': DateTime,
+        };
+    }
   }
 }

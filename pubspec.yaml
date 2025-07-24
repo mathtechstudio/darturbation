@@ -1,6 +1,6 @@
 name: darturbation
 description: An advanced, context-aware, and behavioral mock data generator for Dart & Flutter.
-version: 1.0.0+1
+version: 2.0.0
 homepage: https://github.com/mathtechstudio/darturbation
 repository: https://github.com/mathtechstudio/darturbation
 issue_tracker: https://github.com/mathtechstudio/darturbation/issues
@@ -14,7 +14,7 @@ environment:
 
 dependencies:
   intl: ^0.20.2
-  uuid: ^3.0.7
+  uuid: ^4.5.1
   faker: ^2.1.0
   crypto: ^3.0.3
   collection: ^1.18.0
@@ -22,5 +22,5 @@ dependencies:
 dev_dependencies:
   lints: any
   test: ^1.24.0
-  dart_code_metrics: ^5.7.6
+  dart_code_metrics_presets: ^2.24.0
   coverage: ^1.8.0
