@@ -1,5 +1,33 @@
 # Changelog
 
+## 2.0.1
+
+### 🐛 Bug Fixes
+
+## Product Generation Logic
+
+- Fixed unrealistic product name generation where brands didn't match categories
+- Resolved issue where electronics brands appeared on food/fashion products (e.g., "LG makanan instan", "ABC alat fitness")
+- Added proper brand-to-category mapping with 7 category-specific brand groups
+- Implemented intelligent product naming system with category-aware logic
+
+**Improvements:**
+
+- Electronics products now generate realistic names like "Samsung Galaxy 15", "Apple MacBook Pro"
+- Fashion products show appropriate combinations like "Nike Sepatu Running", "Adidas Kaos Premium"
+- Food products display logical names like "Indomie Mie Instan Ayam Bawang", "ABC Kecap Manis"
+- Sports products generate names like "Puma alat fitness Pro", "Nike Sepatu Training"
+- Books, health, and home products also have category-specific naming logic
+
+**Technical Changes:**
+
+- Added `IndonesianData.brandsByCategory` mapping for 7 product categories
+- Enhanced `ProductGenerator._generateProductName()` with category-specific logic methods
+- Updated `FlutterUtils._generateRealisticProductName()` for consistency
+- Maintained backward compatibility - no breaking API changes
+
+---
+
 ## 2.0.0
 
 ### 🚀 Major Enhancements

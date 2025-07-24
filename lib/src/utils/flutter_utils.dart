@@ -46,16 +46,30 @@ class FlutterUtils {
 
       switch (cardType.toLowerCase()) {
         case 'product':
+          // Generate realistic product using proper logic
+          final categories = IndonesianData.productCategories.keys.toList();
+          final category = Darturbation.randomChoice(categories);
+          final subcategories = IndonesianData.productCategories[category]!;
+          final subcategory = Darturbation.randomChoice(subcategories);
+          
+          // Get appropriate brands for this category
+          final categoryBrands = IndonesianData.brandsByCategory[category] ?? 
+              IndonesianData.productBrands;
+          final brand = Darturbation.randomChoice(categoryBrands);
+          
+          // Generate realistic product name
+          final productName = _generateRealisticProductName(brand, subcategory, category);
+          
           card.addAll({
-            'name':
-                '${Darturbation._faker.lorem.word()} ${Darturbation._faker.lorem.word()}',
+            'name': productName,
+            'brand': brand,
             'price': Darturbation.randomDouble(10000, 1000000),
             'currency': 'IDR',
             'rating': Darturbation.randomDouble(1.0, 5.0),
             'reviewCount': Darturbation.randomInt(0, 1000),
             'imageUrl': 'https://picsum.photos/300/200?random=$i',
-            'category': Darturbation.randomChoice(
-                ['Electronics', 'Fashion', 'Home', 'Books']),
+            'category': category,
+            'subcategory': subcategory,
             'inStock': Darturbation.randomBool(0.8),
             'discount': Darturbation.randomBool(0.3)
                 ? Darturbation.randomInt(5, 50)
@@ -330,5 +344,52 @@ class FlutterUtils {
 
   static String _generateHexColor() {
     return '#${Darturbation.randomInt(0, 16777215).toRadixString(16).padLeft(6, '0').toUpperCase()}';
+  }
+
+  /// Generate realistic product names for Flutter card data
+  static String _generateRealisticProductName(String brand, String subcategory, String category) {
+    switch (category) {
+      case 'electronics':
+        final models = ['Pro', 'Max', 'Plus', 'Air', 'Ultra', 'Mini', 'Lite'];
+        final numbers = ['12', '13', '14', '15', 'X', 'S', 'SE'];
+        
+        switch (subcategory) {
+          case 'smartphone':
+            return '$brand ${Darturbation.randomChoice(['Galaxy', 'iPhone', 'Redmi', 'Note', 'Find'])} ${Darturbation.randomChoice(numbers)}';
+          case 'laptop':
+            return '$brand ${Darturbation.randomChoice(['ThinkPad', 'MacBook', 'VivoBook', 'IdeaPad', 'Pavilion'])} ${Darturbation.randomChoice(models)}';
+          case 'tv':
+            return '$brand Smart TV ${Darturbation.randomInt(32, 75)}" 4K';
+          default:
+            return '$brand $subcategory ${Darturbation.randomChoice(models)}';
+        }
+      case 'fashion':
+        final colors = ['Hitam', 'Putih', 'Biru', 'Merah', 'Abu-abu', 'Navy'];
+        
+        switch (subcategory) {
+          case 'kaos':
+            return '$brand Kaos ${Darturbation.randomChoice(colors)} ${Darturbation.randomChoice(['Premium', 'Basic', 'Slim Fit'])}';
+          case 'kemeja':
+            return '$brand Kemeja ${Darturbation.randomChoice(colors)} ${Darturbation.randomChoice(['Formal', 'Casual', 'Slim Fit'])}';
+          case 'sepatu':
+            return '$brand Sepatu ${Darturbation.randomChoice(['Sneakers', 'Formal', 'Casual', 'Running'])}';
+          default:
+            return '$brand $subcategory ${Darturbation.randomChoice(colors)}';
+        }
+      case 'food':
+        final flavors = ['Original', 'Pedas', 'Ayam Bawang', 'Soto', 'Rendang'];
+        final variants = ['100gr', '200gr', '500ml', '1L', '250ml'];
+        
+        switch (subcategory) {
+          case 'makanan instan':
+            return '$brand Mie Instan ${Darturbation.randomChoice(flavors)}';
+          case 'minuman':
+            return '$brand ${Darturbation.randomChoice(['Teh', 'Air Mineral', 'Jus'])} ${Darturbation.randomChoice(variants)}';
+          default:
+            return '$brand $subcategory ${Darturbation.randomChoice(variants)}';
+        }
+      default:
+        return '$brand $subcategory';
+    }
   }
 }

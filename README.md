@@ -1,12 +1,12 @@
 # 💦 Darturbation 💦: Advanced Mock Data Generator for Dart & Flutter
 
 [![Dart CI](https://github.com/mathtechstudio/darturbation/actions/workflows/ci.yml/badge.svg)](https://github.com/mathtechstudio/darturbation/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-2.0.0-blue)](https://pub.dev/packages/darturbation)
+[![Version](https://img.shields.io/badge/version-2.0.1-blue)](https://pub.dev/packages/darturbation)
 [![Platforms](https://img.shields.io/badge/platforms-Android%20%7C%20iOS%20%7C%20Web%20%7C%20Windows%20%7C%20macOS%20%7C%20Linux-blue)](https://pub.dev/packages/darturbation)
 
 **Darturbation** is the most advanced mock data generator for Dart and Flutter applications, designed specifically for developers who need realistic, context-aware, and behaviorally consistent test data. Unlike traditional faker libraries, Darturbation generates data that maintains logical relationships and follows real-world patterns.
 
-## 🚀 What's New in v2.0.0
+## 🚀 What's New in v2.x
 
 ### 🎯 **Advanced Data Generation**
 
