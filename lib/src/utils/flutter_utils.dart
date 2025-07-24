@@ -51,15 +51,16 @@ class FlutterUtils {
           final category = Darturbation.randomChoice(categories);
           final subcategories = IndonesianData.productCategories[category]!;
           final subcategory = Darturbation.randomChoice(subcategories);
-          
+
           // Get appropriate brands for this category
-          final categoryBrands = IndonesianData.brandsByCategory[category] ?? 
+          final categoryBrands = IndonesianData.brandsByCategory[category] ??
               IndonesianData.productBrands;
           final brand = Darturbation.randomChoice(categoryBrands);
-          
+
           // Generate realistic product name
-          final productName = _generateRealisticProductName(brand, subcategory, category);
-          
+          final productName =
+              _generateRealisticProductName(brand, subcategory, category);
+
           card.addAll({
             'name': productName,
             'brand': brand,
@@ -347,17 +348,30 @@ class FlutterUtils {
   }
 
   /// Generate realistic product names for Flutter card data
-  static String _generateRealisticProductName(String brand, String subcategory, String category) {
+  static String _generateRealisticProductName(
+      String brand, String subcategory, String category) {
     switch (category) {
       case 'electronics':
         final models = ['Pro', 'Max', 'Plus', 'Air', 'Ultra', 'Mini', 'Lite'];
         final numbers = ['12', '13', '14', '15', 'X', 'S', 'SE'];
-        
+
         switch (subcategory) {
           case 'smartphone':
-            return '$brand ${Darturbation.randomChoice(['Galaxy', 'iPhone', 'Redmi', 'Note', 'Find'])} ${Darturbation.randomChoice(numbers)}';
+            return '$brand ${Darturbation.randomChoice([
+                  'Galaxy',
+                  'iPhone',
+                  'Redmi',
+                  'Note',
+                  'Find'
+                ])} ${Darturbation.randomChoice(numbers)}';
           case 'laptop':
-            return '$brand ${Darturbation.randomChoice(['ThinkPad', 'MacBook', 'VivoBook', 'IdeaPad', 'Pavilion'])} ${Darturbation.randomChoice(models)}';
+            return '$brand ${Darturbation.randomChoice([
+                  'ThinkPad',
+                  'MacBook',
+                  'VivoBook',
+                  'IdeaPad',
+                  'Pavilion'
+                ])} ${Darturbation.randomChoice(models)}';
           case 'tv':
             return '$brand Smart TV ${Darturbation.randomInt(32, 75)}" 4K';
           default:
@@ -365,26 +379,43 @@ class FlutterUtils {
         }
       case 'fashion':
         final colors = ['Hitam', 'Putih', 'Biru', 'Merah', 'Abu-abu', 'Navy'];
-        
+
         switch (subcategory) {
           case 'kaos':
-            return '$brand Kaos ${Darturbation.randomChoice(colors)} ${Darturbation.randomChoice(['Premium', 'Basic', 'Slim Fit'])}';
+            return '$brand Kaos ${Darturbation.randomChoice(colors)} ${Darturbation.randomChoice([
+                  'Premium',
+                  'Basic',
+                  'Slim Fit'
+                ])}';
           case 'kemeja':
-            return '$brand Kemeja ${Darturbation.randomChoice(colors)} ${Darturbation.randomChoice(['Formal', 'Casual', 'Slim Fit'])}';
+            return '$brand Kemeja ${Darturbation.randomChoice(colors)} ${Darturbation.randomChoice([
+                  'Formal',
+                  'Casual',
+                  'Slim Fit'
+                ])}';
           case 'sepatu':
-            return '$brand Sepatu ${Darturbation.randomChoice(['Sneakers', 'Formal', 'Casual', 'Running'])}';
+            return '$brand Sepatu ${Darturbation.randomChoice([
+                  'Sneakers',
+                  'Formal',
+                  'Casual',
+                  'Running'
+                ])}';
           default:
             return '$brand $subcategory ${Darturbation.randomChoice(colors)}';
         }
       case 'food':
         final flavors = ['Original', 'Pedas', 'Ayam Bawang', 'Soto', 'Rendang'];
         final variants = ['100gr', '200gr', '500ml', '1L', '250ml'];
-        
+
         switch (subcategory) {
           case 'makanan instan':
             return '$brand Mie Instan ${Darturbation.randomChoice(flavors)}';
           case 'minuman':
-            return '$brand ${Darturbation.randomChoice(['Teh', 'Air Mineral', 'Jus'])} ${Darturbation.randomChoice(variants)}';
+            return '$brand ${Darturbation.randomChoice([
+                  'Teh',
+                  'Air Mineral',
+                  'Jus'
+                ])} ${Darturbation.randomChoice(variants)}';
           default:
             return '$brand $subcategory ${Darturbation.randomChoice(variants)}';
         }

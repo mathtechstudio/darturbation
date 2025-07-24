@@ -363,33 +363,111 @@ class IndonesianData {
   /// Brand mappings by category for more realistic product generation
   static const Map<String, List<String>> brandsByCategory = {
     'electronics': [
-      'Samsung', 'Apple', 'Xiaomi', 'Oppo', 'Vivo', 'Realme', 'Asus', 'Acer',
-      'Lenovo', 'Dell', 'HP', 'Sony', 'LG', 'Panasonic', 'Sharp', 'Polytron'
+      'Samsung',
+      'Apple',
+      'Xiaomi',
+      'Oppo',
+      'Vivo',
+      'Realme',
+      'Asus',
+      'Acer',
+      'Lenovo',
+      'Dell',
+      'HP',
+      'Sony',
+      'LG',
+      'Panasonic',
+      'Sharp',
+      'Polytron'
     ],
     'fashion': [
-      'Uniqlo', 'H&M', 'Zara', 'Adidas', 'Nike', 'Puma', 'Cardinal', 'Hammer',
-      'Eiger', 'Consina', 'Tzu', 'Erigo', 'Greenlight', 'Cottonink', 'Minimal'
+      'Uniqlo',
+      'H&M',
+      'Zara',
+      'Adidas',
+      'Nike',
+      'Puma',
+      'Cardinal',
+      'Hammer',
+      'Eiger',
+      'Consina',
+      'Tzu',
+      'Erigo',
+      'Greenlight',
+      'Cottonink',
+      'Minimal'
     ],
     'home': [
-      'Panasonic', 'Sharp', 'Polytron', 'LG', 'Samsung', 'Philips', 'Electrolux', 
-      'Oxone', 'Miyako', 'Cosmos', 'Maspion', 'Lock&Lock'
+      'Panasonic',
+      'Sharp',
+      'Polytron',
+      'LG',
+      'Samsung',
+      'Philips',
+      'Electrolux',
+      'Oxone',
+      'Miyako',
+      'Cosmos',
+      'Maspion',
+      'Lock&Lock'
     ],
     'books': [
-      'Gramedia', 'Erlangga', 'Mizan', 'Bentang Pustaka', 'Republika', 
-      'Kompas', 'Elex Media', 'Grasindo', 'Andi Publisher'
+      'Gramedia',
+      'Erlangga',
+      'Mizan',
+      'Bentang Pustaka',
+      'Republika',
+      'Kompas',
+      'Elex Media',
+      'Grasindo',
+      'Andi Publisher'
     ],
     'food': [
-      'Indomie', 'Sedaap', 'ABC', 'Bango', 'Royco', 'Masako', 'Sajiku',
-      'Teh Botol Sosro', 'Aqua', 'Le Minerale', 'Pocari Sweat', 'Mizone',
-      'Indofood', 'Wings Food', 'Mayora', 'Khong Guan'
+      'Indomie',
+      'Sedaap',
+      'ABC',
+      'Bango',
+      'Royco',
+      'Masako',
+      'Sajiku',
+      'Teh Botol Sosro',
+      'Aqua',
+      'Le Minerale',
+      'Pocari Sweat',
+      'Mizone',
+      'Indofood',
+      'Wings Food',
+      'Mayora',
+      'Khong Guan'
     ],
     'health': [
-      'Wardah', 'Emina', 'Pigeon', 'Cussons', 'Lifebuoy', 'Dove', 'LOreal',
-      'Garnier', 'Olay', 'Ponds', 'Vaseline', 'Nivea', 'Biore'
+      'Wardah',
+      'Emina',
+      'Pigeon',
+      'Cussons',
+      'Lifebuoy',
+      'Dove',
+      'LOreal',
+      'Garnier',
+      'Olay',
+      'Ponds',
+      'Vaseline',
+      'Nivea',
+      'Biore'
     ],
     'sports': [
-      'Adidas', 'Nike', 'Puma', 'Specs', 'Ortuseight', 'Mizuno', 'Yonex',
-      'Li-Ning', 'Diadora', 'Umbro', 'Kappa', 'Eagle'
+      'Adidas',
+      'Nike',
+      'Puma',
+      'Specs',
+      'Ortuseight',
+      'Mizuno',
+      'Yonex',
+      'Li-Ning',
+      'Diadora',
+      'Umbro',
+      'Kappa',
+      'Eagle'
     ],
   };
 

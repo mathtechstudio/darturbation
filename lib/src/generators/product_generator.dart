@@ -18,15 +18,15 @@ class ProductGenerator {
     final category = Darturbation.randomChoice(categories);
     final subcategories = IndonesianData.productCategories[category]!;
     final subcategory = Darturbation.randomChoice(subcategories);
-    
+
     // Get appropriate brands for this category
-    final categoryBrands = IndonesianData.brandsByCategory[category] ?? 
+    final categoryBrands = IndonesianData.brandsByCategory[category] ??
         IndonesianData.productBrands;
     final brand = Darturbation.randomChoice(categoryBrands);
-    
+
     // Create more realistic product names
     final productName = _generateProductName(brand, subcategory, category);
-    
+
     final pricePreference =
         Darturbation.randomChoice(BehavioralPatterns.priceRanges.keys.toList());
     final price = DarturbationCore()
@@ -56,7 +56,8 @@ class ProductGenerator {
   }
 
   /// Generate realistic product names based on brand, subcategory, and category
-  String _generateProductName(String brand, String subcategory, String category) {
+  String _generateProductName(
+      String brand, String subcategory, String category) {
     switch (category) {
       case 'electronics':
         return _generateElectronicsName(brand, subcategory);
@@ -80,12 +81,24 @@ class ProductGenerator {
   String _generateElectronicsName(String brand, String subcategory) {
     final models = ['Pro', 'Max', 'Plus', 'Air', 'Ultra', 'Mini', 'Lite'];
     final numbers = ['12', '13', '14', '15', 'X', 'S', 'SE'];
-    
+
     switch (subcategory) {
       case 'smartphone':
-        return '$brand ${Darturbation.randomChoice(['Galaxy', 'iPhone', 'Redmi', 'Note', 'Find'])} ${Darturbation.randomChoice(numbers)}';
+        return '$brand ${Darturbation.randomChoice([
+              'Galaxy',
+              'iPhone',
+              'Redmi',
+              'Note',
+              'Find'
+            ])} ${Darturbation.randomChoice(numbers)}';
       case 'laptop':
-        return '$brand ${Darturbation.randomChoice(['ThinkPad', 'MacBook', 'VivoBook', 'IdeaPad', 'Pavilion'])} ${Darturbation.randomChoice(models)}';
+        return '$brand ${Darturbation.randomChoice([
+              'ThinkPad',
+              'MacBook',
+              'VivoBook',
+              'IdeaPad',
+              'Pavilion'
+            ])} ${Darturbation.randomChoice(models)}';
       case 'tv':
         return '$brand Smart TV ${Darturbation.randomInt(32, 75)}" 4K';
       default:
@@ -95,33 +108,66 @@ class ProductGenerator {
 
   String _generateFashionName(String brand, String subcategory) {
     final colors = ['Hitam', 'Putih', 'Biru', 'Merah', 'Abu-abu', 'Navy'];
-    final materials = ['Cotton', 'Denim', 'Polyester', 'Katun'];
-    
+
     switch (subcategory) {
       case 'kaos':
-        return '$brand Kaos ${Darturbation.randomChoice(colors)} ${Darturbation.randomChoice(['Premium', 'Basic', 'Slim Fit'])}';
+        return '$brand Kaos ${Darturbation.randomChoice(colors)} ${Darturbation.randomChoice([
+              'Premium',
+              'Basic',
+              'Slim Fit'
+            ])}';
       case 'kemeja':
-        return '$brand Kemeja ${Darturbation.randomChoice(colors)} ${Darturbation.randomChoice(['Formal', 'Casual', 'Slim Fit'])}';
+        return '$brand Kemeja ${Darturbation.randomChoice(colors)} ${Darturbation.randomChoice([
+              'Formal',
+              'Casual',
+              'Slim Fit'
+            ])}';
       case 'celana':
-        return '$brand Celana ${Darturbation.randomChoice(['Jeans', 'Chino', 'Jogger'])} ${Darturbation.randomChoice(colors)}';
+        return '$brand Celana ${Darturbation.randomChoice([
+              'Jeans',
+              'Chino',
+              'Jogger'
+            ])} ${Darturbation.randomChoice(colors)}';
       case 'sepatu':
-        return '$brand Sepatu ${Darturbation.randomChoice(['Sneakers', 'Formal', 'Casual', 'Running'])}';
+        return '$brand Sepatu ${Darturbation.randomChoice([
+              'Sneakers',
+              'Formal',
+              'Casual',
+              'Running'
+            ])}';
       default:
         return '$brand $subcategory ${Darturbation.randomChoice(colors)}';
     }
   }
 
   String _generateFoodName(String brand, String subcategory) {
-    final flavors = ['Original', 'Pedas', 'Ayam Bawang', 'Soto', 'Rendang', 'Ayam Geprek'];
+    final flavors = [
+      'Original',
+      'Pedas',
+      'Ayam Bawang',
+      'Soto',
+      'Rendang',
+      'Ayam Geprek'
+    ];
     final variants = ['100gr', '200gr', '500ml', '1L', '250ml'];
-    
+
     switch (subcategory) {
       case 'makanan instan':
         return '$brand Mie Instan ${Darturbation.randomChoice(flavors)}';
       case 'minuman':
-        return '$brand ${Darturbation.randomChoice(['Teh', 'Air Mineral', 'Jus', 'Susu'])} ${Darturbation.randomChoice(variants)}';
+        return '$brand ${Darturbation.randomChoice([
+              'Teh',
+              'Air Mineral',
+              'Jus',
+              'Susu'
+            ])} ${Darturbation.randomChoice(variants)}';
       case 'bumbu masak':
-        return '$brand ${Darturbation.randomChoice(['Kecap', 'Sambal', 'Bumbu', 'Penyedap'])} ${Darturbation.randomChoice(['Manis', 'Asin', 'Pedas'])}';
+        return '$brand ${Darturbation.randomChoice([
+              'Kecap',
+              'Sambal',
+              'Bumbu',
+              'Penyedap'
+            ])} ${Darturbation.randomChoice(['Manis', 'Asin', 'Pedas'])}';
       default:
         return '$brand $subcategory ${Darturbation.randomChoice(variants)}';
     }
@@ -129,12 +175,22 @@ class ProductGenerator {
 
   String _generateHomeName(String brand, String subcategory) {
     final types = ['Premium', 'Deluxe', 'Basic', 'Pro', 'Smart'];
-    
+
     switch (subcategory) {
       case 'peralatan dapur':
-        return '$brand ${Darturbation.randomChoice(['Rice Cooker', 'Blender', 'Mixer', 'Kompor'])} ${Darturbation.randomChoice(types)}';
+        return '$brand ${Darturbation.randomChoice([
+              'Rice Cooker',
+              'Blender',
+              'Mixer',
+              'Kompor'
+            ])} ${Darturbation.randomChoice(types)}';
       case 'furniture':
-        return '$brand ${Darturbation.randomChoice(['Sofa', 'Meja', 'Kursi', 'Lemari'])} ${Darturbation.randomChoice(types)}';
+        return '$brand ${Darturbation.randomChoice([
+              'Sofa',
+              'Meja',
+              'Kursi',
+              'Lemari'
+            ])} ${Darturbation.randomChoice(types)}';
       default:
         return '$brand $subcategory ${Darturbation.randomChoice(types)}';
     }
@@ -142,23 +198,42 @@ class ProductGenerator {
 
   String _generateBookName(String brand, String subcategory) {
     final titles = [
-      'Belajar Pemrograman', 'Sejarah Indonesia', 'Matematika Dasar', 
-      'Bahasa Inggris', 'Novel Remaja', 'Motivasi Hidup'
+      'Belajar Pemrograman',
+      'Sejarah Indonesia',
+      'Matematika Dasar',
+      'Bahasa Inggris',
+      'Novel Remaja',
+      'Motivasi Hidup'
     ];
-    
+
     return '$brand ${Darturbation.randomChoice(titles)}';
   }
 
   String _generateHealthName(String brand, String subcategory) {
     final variants = ['50ml', '100ml', '200ml', '30 tablet', '60 kapsul'];
-    
+
     switch (subcategory) {
       case 'skincare':
-        return '$brand ${Darturbation.randomChoice(['Face Wash', 'Moisturizer', 'Serum', 'Toner'])} ${Darturbation.randomChoice(variants)}';
+        return '$brand ${Darturbation.randomChoice([
+              'Face Wash',
+              'Moisturizer',
+              'Serum',
+              'Toner'
+            ])} ${Darturbation.randomChoice(variants)}';
       case 'makeup':
-        return '$brand ${Darturbation.randomChoice(['Lipstik', 'Foundation', 'Bedak', 'Mascara'])}';
+        return '$brand ${Darturbation.randomChoice([
+              'Lipstik',
+              'Foundation',
+              'Bedak',
+              'Mascara'
+            ])}';
       case 'vitamin':
-        return '$brand Vitamin ${Darturbation.randomChoice(['C', 'D', 'E', 'B Complex'])} ${Darturbation.randomChoice(variants)}';
+        return '$brand Vitamin ${Darturbation.randomChoice([
+              'C',
+              'D',
+              'E',
+              'B Complex'
+            ])} ${Darturbation.randomChoice(variants)}';
       default:
         return '$brand $subcategory ${Darturbation.randomChoice(variants)}';
     }
@@ -166,12 +241,21 @@ class ProductGenerator {
 
   String _generateSportsName(String brand, String subcategory) {
     final types = ['Pro', 'Elite', 'Training', 'Performance'];
-    
+
     switch (subcategory) {
       case 'sepatu olahraga':
-        return '$brand Sepatu ${Darturbation.randomChoice(['Running', 'Basketball', 'Football', 'Training'])} ${Darturbation.randomChoice(types)}';
+        return '$brand Sepatu ${Darturbation.randomChoice([
+              'Running',
+              'Basketball',
+              'Football',
+              'Training'
+            ])} ${Darturbation.randomChoice(types)}';
       case 'baju olahraga':
-        return '$brand Jersey ${Darturbation.randomChoice(['Football', 'Basketball', 'Running'])} ${Darturbation.randomChoice(types)}';
+        return '$brand Jersey ${Darturbation.randomChoice([
+              'Football',
+              'Basketball',
+              'Running'
+            ])} ${Darturbation.randomChoice(types)}';
       default:
         return '$brand $subcategory ${Darturbation.randomChoice(types)}';
     }
